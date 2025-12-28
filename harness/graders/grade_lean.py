@@ -25,7 +25,11 @@ def _parse_rubric(task_text: str) -> dict[str, list[str]]:
     return {"must": must, "should": should}
 
 
-def evaluate(task_path: Path, answer: str, arbiter: Any | None = None) -> dict[str, Any]:
+def evaluate(
+    task_path: Path,
+    answer: str,
+    arbiter: Any | None = None,
+) -> dict[str, Any]:
     task_text = Path(task_path).read_text(encoding="utf-8")
     rubric = _parse_rubric(task_text)
 
@@ -40,7 +44,11 @@ def evaluate(task_path: Path, answer: str, arbiter: Any | None = None) -> dict[s
     if arbiter is not None and getattr(arbiter, "cmd_template", None):
         arbiter_pass = _arbiter_verdict(task_text, answer, arbiter)
 
-    passed = heuristics_pass if arbiter_pass is None else (heuristics_pass and arbiter_pass)
+    passed = (
+        heuristics_pass
+        if arbiter_pass is None
+        else (heuristics_pass and arbiter_pass)
+    )
 
     return {
         "passed": passed,

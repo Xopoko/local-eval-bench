@@ -5,7 +5,6 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-
 DATA = [
     {
         "model": "openai/gpt-5.1-codex-max",
@@ -76,7 +75,12 @@ def main() -> None:
     for idx, value in enumerate(pass_at_5):
         ax.text(min(value + 0.02, 0.98), idx + height / 2, f"{value:.2f}", va="center")
 
-    out_path = Path(__file__).resolve().parents[1] / "docs" / "assets" / "lean_known_results.png"
+    out_path = (
+        Path(__file__).resolve().parents[1]
+        / "docs"
+        / "assets"
+        / "lean_known_results.png"
+    )
     fig.tight_layout()
     fig.savefig(out_path, dpi=200)
 

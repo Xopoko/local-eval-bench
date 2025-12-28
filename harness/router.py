@@ -73,7 +73,10 @@ def choose_route(
         arbiter=arbiter,
     )
 
-    if py_codegen["pass_at_1"] > py_model["pass_at_1"] and md_codegen["pass_at_1"] < md_model["pass_at_1"]:
+    if (
+        py_codegen["pass_at_1"] > py_model["pass_at_1"]
+        and md_codegen["pass_at_1"] < md_model["pass_at_1"]
+    ):
         return {
             "code_model": codegen,
             "logic_model": model,

@@ -59,7 +59,11 @@ def _avg_py_coverage(results: list[dict[str, Any]]) -> float | None:
     return sum(cov_values) / len(cov_values)
 
 
-def _write_summary(report_dir: Path, run_meta: dict[str, Any], results: list[dict[str, Any]]) -> None:
+def _write_summary(
+    report_dir: Path,
+    run_meta: dict[str, Any],
+    results: list[dict[str, Any]],
+) -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
     summary_path = report_dir / "summary.md"
 
@@ -92,22 +96,38 @@ def _write_summary(report_dir: Path, run_meta: dict[str, Any], results: list[dic
 
     lines.append("## Metrics")
     lines.append("")
-    lines.append(f"- pass@1 overall: {overall:.2f}" if overall is not None else "- pass@1 overall: n/a")
+    lines.append(
+        f"- pass@1 overall: {overall:.2f}"
+        if overall is not None
+        else "- pass@1 overall: n/a"
+    )
     if overall_k is not None:
         lines.append(f"- pass@{k} overall: {overall_k:.2f}")
     if overall_rate is not None:
         lines.append(f"- avg pass rate overall: {overall_rate:.2f}")
-    lines.append(f"- pass@1 md: {md_rate:.2f}" if md_rate is not None else "- pass@1 md: n/a")
+    lines.append(
+        f"- pass@1 md: {md_rate:.2f}"
+        if md_rate is not None
+        else "- pass@1 md: n/a"
+    )
     if md_k is not None:
         lines.append(f"- pass@{k} md: {md_k:.2f}")
     if md_rate_avg is not None:
         lines.append(f"- avg pass rate md: {md_rate_avg:.2f}")
-    lines.append(f"- pass@1 py: {py_rate:.2f}" if py_rate is not None else "- pass@1 py: n/a")
+    lines.append(
+        f"- pass@1 py: {py_rate:.2f}"
+        if py_rate is not None
+        else "- pass@1 py: n/a"
+    )
     if py_k is not None:
         lines.append(f"- pass@{k} py: {py_k:.2f}")
     if py_rate_avg is not None:
         lines.append(f"- avg pass rate py: {py_rate_avg:.2f}")
-    lines.append(f"- pass@1 synth: {synth_rate:.2f}" if synth_rate is not None else "- pass@1 synth: n/a")
+    lines.append(
+        f"- pass@1 synth: {synth_rate:.2f}"
+        if synth_rate is not None
+        else "- pass@1 synth: n/a"
+    )
     if synth_k is not None:
         lines.append(f"- pass@{k} synth: {synth_k:.2f}")
     if synth_rate_avg is not None:
@@ -137,7 +157,11 @@ def _write_summary(report_dir: Path, run_meta: dict[str, Any], results: list[dic
     summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_metrics(report_dir: Path, run_meta: dict[str, Any], results: list[dict[str, Any]]) -> None:
+def _write_metrics(
+    report_dir: Path,
+    run_meta: dict[str, Any],
+    results: list[dict[str, Any]],
+) -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
     metrics_path = report_dir / "metrics.json"
 
@@ -271,10 +295,11 @@ def main() -> None:
 
     for idx, task in enumerate(tasks_to_run, start=1):
         model_name = code_model if task.task_type == "py" else logic_model
-        print(
-            f"[{idx}/{total}] start {task.task_id} ({task.task_type}) model={model_name}",
-            flush=True,
+        message = (
+            f"[{idx}/{total}] start {task.task_id} ({task.task_type}) "
+            f"model={model_name}"
         )
+        print(message, flush=True)
         task_start = time.time()
         try:
             result = core.evaluate_task(

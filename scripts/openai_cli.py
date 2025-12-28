@@ -63,9 +63,9 @@ def _request_json(
             body = resp.read().decode("utf-8")
     except urllib.error.HTTPError as err:
         body = err.read().decode("utf-8") if err.fp else ""
-        raise APIError(err.code, body or err.reason)
+        raise APIError(err.code, body or err.reason) from err
     except urllib.error.URLError as err:
-        raise APIError(0, str(err))
+        raise APIError(0, str(err)) from err
     if os.getenv("OPENAI_DEBUG") == "1":
         print(body, file=sys.stderr)
     return json.loads(body)
@@ -158,7 +158,11 @@ def main() -> int:
     parser.add_argument("--model", required=True)
     parser.add_argument("--task", default="md")
     parser.add_argument("--task-id", default="unknown")
-    parser.add_argument("--temperature", type=float, default=float(os.getenv("OPENAI_TEMPERATURE", "0")))
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=float(os.getenv("OPENAI_TEMPERATURE", "0")),
+    )
     parser.add_argument(
         "--max-output-tokens",
         type=int,
