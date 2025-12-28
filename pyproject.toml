@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-eval-bench"
+version = "0.2.0"
+description = "Local benchmark for model routing across logic, refactor, synthesis, and Lean tasks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "LocalEval contributors" }]
+keywords = ["benchmark", "evaluation", "llm", "agents", "routing"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Testing",
+]
+dependencies = [
+  "pytest",
+  "coverage",
+  "ruff",
+]
+
+[project.scripts]
+local-eval = "harness.run_eval:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["harness*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = ["E", "F", "I", "B", "UP", "W"]
+ignore = ["E203"]
+
+[tool.coverage.run]
+branch = true
+source = ["harness"]
